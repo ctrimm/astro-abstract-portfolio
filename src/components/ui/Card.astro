@@ -1,0 +1,14 @@
+---
+interface Props {
+  hover?: boolean;
+  class?: string;
+}
+
+const { hover = false, class: className = '' } = Astro.props;
+
+const classes = `bg-background-secondary rounded-xl p-6 ${hover ? 'card-hover' : ''} ${className}`;
+---
+
+<div class={classes}>
+  <slot />
+</div>

@@ -1,0 +1,108 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Card from '@components/ui/Card.astro';
+import { siteConfig } from '@/data/site';
+
+const skills = [
+  { category: 'Design', items: ['UI/UX Design', 'Figma', 'Adobe Creative Suite', 'Branding'] },
+  { category: 'Frontend', items: ['React', 'Next.js', 'Astro', 'Tailwind CSS', 'TypeScript'] },
+  { category: 'Backend', items: ['Node.js', 'PostgreSQL', 'MongoDB', 'REST APIs'] },
+  { category: 'Tools', items: ['Git', 'VS Code', 'Vercel', 'Netlify'] },
+];
+
+const experience = [
+  {
+    year: '2023 - Present',
+    role: 'Senior Full-Stack Developer',
+    company: 'TechStart Inc',
+    description: 'Leading development of modern web applications using React and Node.js',
+  },
+  {
+    year: '2021 - 2023',
+    role: 'UI/UX Designer & Developer',
+    company: 'Innovation Labs',
+    description: 'Designed and developed user interfaces for SaaS products',
+  },
+  {
+    year: '2019 - 2021',
+    role: 'Frontend Developer',
+    company: 'Growth Co',
+    description: 'Built responsive websites and web applications',
+  },
+];
+---
+
+<BaseLayout
+  title={`About | ${siteConfig.name}`}
+  description="Learn more about my background, skills, and experience in web design and development."
+>
+  <section class="py-24">
+    <div class="container mx-auto px-4">
+      <!-- Intro -->
+      <div class="max-w-3xl mx-auto mb-20">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">About Me</h1>
+        <div class="space-y-4 text-lg text-foreground-secondary">
+          <p>
+            Hi! I'm {siteConfig.name}, a creative developer and designer passionate about
+            crafting beautiful digital experiences. With over 5 years of experience in web
+            design and development, I specialize in creating user-centered solutions that
+            blend aesthetics with functionality.
+          </p>
+          <p>
+            I believe in the power of design to solve problems and create meaningful
+            connections. Whether it's a sleek e-commerce platform, a brand identity, or a
+            mobile app, I approach every project with creativity, attention to detail, and
+            a commitment to excellence.
+          </p>
+          <p>
+            When I'm not coding or designing, you can find me exploring new design trends,
+            contributing to open-source projects, or sharing my knowledge through writing
+            and mentoring.
+          </p>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="mb-20">
+        <h2 class="text-3xl font-bold mb-8 text-center">Skills & Technologies</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {skills.map((skillGroup) => (
+            <Card class="animate-on-scroll">
+              <h3 class="font-semibold text-lg mb-4 text-accent">
+                {skillGroup.category}
+              </h3>
+              <ul class="space-y-2">
+                {skillGroup.items.map((skill) => (
+                  <li class="text-sm text-foreground-secondary flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-accent rounded-full" />
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <!-- Experience -->
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8">Experience</h2>
+        <div class="space-y-8">
+          {experience.map((exp, index) => (
+            <div
+              class="border-l-2 border-accent pl-6 pb-8 last:pb-0 animate-on-scroll"
+              style={`animation-delay: ${index * 0.1}s`}
+            >
+              <div class="text-sm text-accent font-medium mb-2">{exp.year}</div>
+              <h3 class="text-xl font-bold mb-1">{exp.role}</h3>
+              <div class="text-foreground-secondary font-medium mb-2">
+                {exp.company}
+              </div>
+              <p class="text-foreground-muted">{exp.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

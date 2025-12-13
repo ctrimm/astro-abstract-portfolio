@@ -1,0 +1,29 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/sections/Hero.astro';
+import FeaturedWork from '@components/sections/FeaturedWork.astro';
+import ContactCTA from '@components/sections/ContactCTA.astro';
+import { getCollection } from 'astro:content';
+import { siteConfig } from '@/data/site';
+
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects
+  .filter((project) => project.data.featured)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title={`${siteConfig.name} | ${siteConfig.title}`}
+  description={siteConfig.description}
+>
+  <Hero
+    name={siteConfig.name}
+    title={siteConfig.title}
+    description="I craft beautiful digital experiences that blend design and technology. Specializing in web design, branding, and full-stack development."
+  />
+
+  <FeaturedWork projects={featuredProjects} />
+
+  <ContactCTA />
+</BaseLayout>

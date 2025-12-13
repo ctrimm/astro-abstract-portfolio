@@ -1,0 +1,26 @@
+[
+  {
+    "id": "testimonial-1",
+    "name": "Sarah Johnson",
+    "role": "CEO",
+    "company": "TechStart Inc",
+    "content": "Working with John was an absolute pleasure. His attention to detail and creative vision transformed our brand identity completely.",
+    "rating": 5
+  },
+  {
+    "id": "testimonial-2",
+    "name": "Michael Chen",
+    "role": "Product Manager",
+    "company": "Innovation Labs",
+    "content": "John delivered beyond our expectations. The website redesign has significantly improved our user engagement and conversion rates.",
+    "rating": 5
+  },
+  {
+    "id": "testimonial-3",
+    "name": "Emily Rodriguez",
+    "role": "Marketing Director",
+    "company": "Growth Co",
+    "content": "Professional, creative, and always on time. John's work has helped us stand out in a crowded market.",
+    "rating": 5
+  }
+]

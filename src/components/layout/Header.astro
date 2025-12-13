@@ -1,0 +1,119 @@
+---
+import { navigation } from '@/data/navigation';
+import { siteConfig } from '@/data/site';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/80 border-b border-background-tertiary"
+  id="header"
+>
+  <nav class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <a
+        href="/"
+        class="text-xl font-bold hover:text-accent transition-colors"
+        aria-label="Home"
+      >
+        {siteConfig.name}
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center gap-8">
+        {navigation.map((item) => (
+          <a
+            href={item.href}
+            class={`link-underline text-sm font-medium transition-colors ${
+              currentPath === item.href
+                ? 'text-accent'
+                : 'text-foreground-secondary hover:text-foreground'
+            }`}
+          >
+            {item.name}
+          </a>
+        ))}
+      </div>
+
+      <!-- CTA Button -->
+      <div class="hidden md:block">
+        <a
+          href="/contact/"
+          class="px-4 py-2 bg-accent text-white rounded-full text-sm font-medium hover:bg-accent-light transition-colors"
+        >
+          Hire Me
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        id="mobile-menu-button"
+        class="md:hidden p-2"
+        aria-label="Toggle menu"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div
+      id="mobile-menu"
+      class="hidden md:hidden mt-4 pt-4 border-t border-background-tertiary"
+    >
+      <div class="flex flex-col gap-4">
+        {navigation.map((item) => (
+          <a
+            href={item.href}
+            class={`text-sm font-medium transition-colors ${
+              currentPath === item.href
+                ? 'text-accent'
+                : 'text-foreground-secondary hover:text-foreground'
+            }`}
+          >
+            {item.name}
+          </a>
+        ))}
+        <a
+          href="/contact/"
+          class="px-4 py-2 bg-accent text-white rounded-full text-sm font-medium text-center hover:bg-accent-light transition-colors"
+        >
+          Hire Me
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="h-[72px]"></div>
+
+<script>
+  function initMobileMenu() {
+    const button = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+
+    if (button && menu) {
+      button.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+      });
+    }
+  }
+
+  initMobileMenu();
+
+  document.addEventListener('astro:page-load', () => {
+    initMobileMenu();
+  });
+</script>

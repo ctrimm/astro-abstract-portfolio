@@ -1,0 +1,87 @@
+---
+interface Props {
+  project: {
+    id: string;
+    data: {
+      title: string;
+      description: string;
+      thumbnail: string;
+      category: string;
+      technologies: string[];
+    };
+  };
+  index?: number;
+}
+
+const { project, index = 0 } = Astro.props;
+const { title, description, thumbnail, category, technologies } = project.data;
+---
+
+<article
+  class="group animate-on-scroll"
+  style={`animation-delay: ${index * 0.1}s`}
+>
+  <a href={`/work/${project.id}/`} class="block">
+    <div class="relative overflow-hidden rounded-xl bg-background-secondary">
+      <div class="aspect-[4/3] overflow-hidden">
+        <div
+          class="w-full h-full bg-gradient-to-br from-accent/10 to-accent-light/10 transition-transform duration-500 group-hover:scale-110 flex items-center justify-center"
+        >
+          <div class="text-center p-8">
+            <div class="text-4xl mb-4">🎨</div>
+            <p class="text-sm text-foreground-muted">Project image</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hover Overlay -->
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6"
+      >
+        <div class="space-y-2">
+          <span
+            class="text-xs font-medium text-accent uppercase tracking-wider"
+          >
+            {category.replace('-', ' ')}
+          </span>
+          <h3
+            class="text-xl font-bold"
+            transition:name={`project-title-${project.id}`}
+          >
+            {title}
+          </h3>
+          <p class="text-sm text-foreground-secondary line-clamp-2">
+            {description}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Footer -->
+    <div class="mt-4 flex items-center justify-between">
+      <div>
+        <h3
+          class="font-semibold group-hover:text-accent transition-colors"
+        >
+          {title}
+        </h3>
+        <p class="text-sm text-foreground-muted">
+          {category.replace('-', ' ')}
+        </p>
+      </div>
+      <svg
+        class="w-5 h-5 text-foreground-muted group-hover:text-accent group-hover:translate-x-1 transition-all"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5l7 7-7 7"
+        />
+      </svg>
+    </div>
+  </a>
+</article>
