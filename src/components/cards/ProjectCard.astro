@@ -22,16 +22,15 @@ const projectNumber = (index + 1).toString().padStart(2, '0');
   <a href={`/work/${project.id}/`} class="block">
     <!-- Project Image -->
     <div class="relative overflow-hidden rounded-lg mb-4 aspect-[4/3] bg-gray-100">
-      <div class="w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
-        <div class="text-center p-8">
-          <div class="text-4xl mb-4">🎨</div>
-          <p class="text-sm text-gray-600">Project image</p>
-        </div>
-      </div>
+      <img
+        src={thumbnail}
+        alt={title}
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
       
       <!-- Category Label -->
       <div class="absolute top-4 left-4 bg-white px-3 py-1 rounded-full text-xs font-medium">
-        {category.replace('-', ' ')}
+        {category.replace(/-/g, ' ')}
       </div>
     </div>
 
