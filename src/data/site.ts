@@ -1,7 +1,9 @@
 export const siteConfig = {
-  name: 'John Doe',
-  title: 'Creative Developer & Designer',
-  description: 'Portfolio of John Doe, a creative developer specializing in web design and development.',
+  name: 'Nate Bennett',
+  title: 'Web Designer',
+  tagline: 'Since 2012',
+  email: 'natebennett@gmail.com',
+  description: 'I design and build modern websites that balance clarity, function, and visual impact.',
   url: 'https://ctrimm.github.io/astro-abstract-portfolio',
   ogImage: '/images/og-image.jpg',
   links: {
@@ -9,6 +11,6 @@ export const siteConfig = {
     linkedin: 'https://linkedin.com',
     twitter: 'https://twitter.com',
     dribbble: 'https://dribbble.com',
-    email: 'mailto:hello@example.com',
+    email: 'mailto:natebennett@gmail.com',
   },
 };

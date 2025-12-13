@@ -13,133 +13,143 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const { title, description, technologies, client, liveUrl, category } =
-  project.data;
+const { title, description, technologies, client, liveUrl, category } = project.data;
 
-// Get next/previous projects
+// Get all projects for navigation
 const allProjects = await getCollection('projects');
 const sortedProjects = allProjects.sort(
   (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
 );
 const currentIndex = sortedProjects.findIndex((p) => p.id === project.id);
+const projectNumber = (currentIndex + 1).toString().padStart(2, '0');
 const prevProject = sortedProjects[currentIndex - 1];
 const nextProject = sortedProjects[currentIndex + 1];
 ---
 
 <BaseLayout title={`${title} | Work`} description={description}>
-  <!-- Hero -->
-  <section class="pt-32 pb-16">
-    <div class="container mx-auto px-4">
+  <!-- Back Navigation -->
+  <section class="py-8 border-b border-gray-200">
+    <div class="container mx-auto px-8">
+      <a
+        href="/work/"
+        class="inline-flex items-center gap-2 text-sm hover:opacity-70 transition-opacity"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to Projects
+      </a>
+    </div>
+  </section>
+
+  <!-- Project Header -->
+  <section class="py-12 md:py-20">
+    <div class="container mx-auto px-8">
       <div class="max-w-4xl">
-        <a
-          href="/work/"
-          class="inline-flex items-center gap-2 text-foreground-muted hover:text-accent mb-8 transition-colors"
-        >
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          Back to Work
-        </a>
-        <h1
-          class="text-4xl md:text-6xl font-bold mb-6"
-          transition:name={`project-title-${project.id}`}
-        >
+        <div class="mb-6">
+          <span class="text-sm text-gray-500">/{projectNumber}</span>
+        </div>
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-8">
           {title}
         </h1>
-        <p class="text-xl text-foreground-secondary mb-8">{description}</p>
+      </div>
+    </div>
+  </section>
 
-        <div class="flex flex-wrap gap-8 text-sm">
-          <div>
-            <span class="text-foreground-muted block mb-1">Category</span>
-            <span class="font-medium">{category.replace('-', ' ')}</span>
+  <!-- Project Hero Image -->
+  <section class="pb-12 md:pb-20">
+    <div class="container mx-auto px-8">
+      <div class="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
+        <div class="w-full h-full flex items-center justify-center">
+          <div class="text-center p-12">
+            <div class="text-6xl mb-4">🎨</div>
+            <p class="text-gray-600">Project hero image</p>
           </div>
+        </div>
+        
+        <!-- Category Badge -->
+        <div class="absolute top-6 left-6 bg-black text-white px-4 py-2 rounded-full text-sm font-medium">
+          {category.replace('-', ' ')}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Details Grid -->
+  <section class="py-12 border-t border-gray-200">
+    <div class="container mx-auto px-8">
+      <div class="grid md:grid-cols-2 gap-12">
+        <!-- Left Column: Project Info -->
+        <div class="space-y-8">
           {client && (
             <div>
-              <span class="text-foreground-muted block mb-1">Client</span>
-              <span class="font-medium">{client}</span>
+              <h3 class="text-sm font-semibold mb-3 uppercase tracking-wider text-gray-500">Client</h3>
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                  <span class="text-lg">👤</span>
+                </div>
+                <div>
+                  <p class="font-semibold">{client}</p>
+                  <p class="text-sm text-gray-600">Founder of {client}</p>
+                </div>
+              </div>
             </div>
           )}
+
           <div>
-            <span class="text-foreground-muted block mb-1">Technologies</span>
+            <h3 class="text-sm font-semibold mb-3 uppercase tracking-wider text-gray-500">Description</h3>
+            <p class="text-lg leading-relaxed">{description}</p>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-semibold mb-3 uppercase tracking-wider text-gray-500">Technologies</h3>
             <div class="flex flex-wrap gap-2">
               {technologies.map((tech) => (
-                <span class="px-2 py-1 bg-background-secondary rounded text-xs">
+                <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
                   {tech}
                 </span>
               ))}
             </div>
           </div>
+
           {liveUrl && (
-            <div class="flex items-end">
-              <Button href={liveUrl} variant="primary" size="sm" external>
-                View Live Site
+            <div>
+              <Button href={liveUrl} variant="primary" external>
+                View Live Site →
               </Button>
             </div>
           )}
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Hero Image Placeholder -->
-  <section class="pb-16">
-    <div class="container mx-auto px-4">
-      <div
-        class="w-full aspect-video bg-gradient-to-br from-accent/10 to-accent-light/10 rounded-2xl flex items-center justify-center"
-      >
-        <div class="text-center">
-          <div class="text-6xl mb-4">🎨</div>
-          <p class="text-foreground-muted">Project Hero Image</p>
+        <!-- Right Column: Project Content -->
+        <div class="prose prose-lg max-w-none">
+          <Content />
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Content -->
-  <section class="py-16">
-    <div class="container mx-auto px-4">
-      <div class="prose prose-invert prose-lg max-w-3xl mx-auto">
-        <Content />
       </div>
     </div>
   </section>
 
   <!-- Navigation -->
-  <section class="py-16 border-t border-background-tertiary">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between">
-        {
-          prevProject ? (
-            <a href={`/work/${prevProject.id}/`} class="group text-left">
-              <span class="text-sm text-foreground-muted block mb-1">
-                Previous Project
-              </span>
-              <span class="font-medium group-hover:text-accent transition-colors">
-                {prevProject.data.title}
-              </span>
-            </a>
-          ) : (
-            <div />
-          )
-        }
+  <section class="py-12 border-t border-gray-200">
+    <div class="container mx-auto px-8">
+      <div class="flex justify-between items-center">
+        {prevProject ? (
+          <a href={`/work/${prevProject.id}/`} class="group text-left">
+            <span class="text-sm text-gray-500 block mb-1">← Previous</span>
+            <span class="font-semibold group-hover:opacity-70 transition-opacity">
+              {prevProject.data.title}
+            </span>
+          </a>
+        ) : <div />}
 
-        {
-          nextProject && (
-            <a href={`/work/${nextProject.id}/`} class="text-right group">
-              <span class="text-sm text-foreground-muted block mb-1">
-                Next Project
-              </span>
-              <span class="font-medium group-hover:text-accent transition-colors">
-                {nextProject.data.title}
-              </span>
-            </a>
-          )
-        }
+        {nextProject && (
+          <a href={`/work/${nextProject.id}/`} class="text-right group">
+            <span class="text-sm text-gray-500 block mb-1">Next →</span>
+            <span class="font-semibold group-hover:opacity-70 transition-opacity">
+              {nextProject.data.title}
+            </span>
+          </a>
+        )}
       </div>
     </div>
   </section>
@@ -147,19 +157,19 @@ const nextProject = sortedProjects[currentIndex + 1];
 
 <style>
   .prose {
-    @apply text-foreground-secondary;
+    @apply text-gray-700;
   }
 
   .prose :global(h2) {
-    @apply text-foreground font-bold text-2xl mt-8 mb-4;
+    @apply text-black font-bold text-2xl mt-8 mb-4;
   }
 
   .prose :global(h3) {
-    @apply text-foreground font-semibold text-xl mt-6 mb-3;
+    @apply text-black font-semibold text-xl mt-6 mb-3;
   }
 
   .prose :global(p) {
-    @apply mb-4;
+    @apply mb-4 leading-relaxed;
   }
 
   .prose :global(ul),
@@ -172,10 +182,10 @@ const nextProject = sortedProjects[currentIndex + 1];
   }
 
   .prose :global(strong) {
-    @apply text-foreground font-semibold;
+    @apply text-black font-semibold;
   }
 
   .prose :global(a) {
-    @apply text-accent hover:underline;
+    @apply text-black underline hover:no-underline;
   }
 </style>

@@ -1,29 +1,98 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import Hero from '@components/sections/Hero.astro';
-import FeaturedWork from '@components/sections/FeaturedWork.astro';
-import ContactCTA from '@components/sections/ContactCTA.astro';
 import { getCollection } from 'astro:content';
 import { siteConfig } from '@/data/site';
 
 const allProjects = await getCollection('projects');
-const featuredProjects = allProjects
-  .filter((project) => project.data.featured)
-  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-  .slice(0, 3);
+const projectCount = allProjects.length.toString().padStart(2, '0');
 ---
 
 <BaseLayout
   title={`${siteConfig.name} | ${siteConfig.title}`}
   description={siteConfig.description}
 >
-  <Hero
-    name={siteConfig.name}
-    title={siteConfig.title}
-    description="I craft beautiful digital experiences that blend design and technology. Specializing in web design, branding, and full-stack development."
-  />
+  <div class="min-h-screen flex flex-col">
+    <!-- Main Content Grid -->
+    <section class="flex-1 py-12 md:py-20">
+      <div class="container mx-auto px-8">
+        <div class="grid md:grid-cols-3 gap-8 md:gap-12 items-start">
+          <!-- Profile Card (Left) -->
+          <div class="md:col-span-1">
+            <div class="bg-gray-200 aspect-[3/4] rounded-lg flex items-center justify-center mb-4">
+              <div class="text-center p-8">
+                <div class="text-6xl mb-4">👤</div>
+                <p class="text-sm text-gray-600">Profile photo</p>
+              </div>
+            </div>
+            <h2 class="text-lg font-semibold mb-1">{siteConfig.title}</h2>
+            <p class="text-gray-600">({siteConfig.tagline})</p>
+          </div>
 
-  <FeaturedWork projects={featuredProjects} />
+          <!-- Center 3D Logo -->
+          <div class="md:col-span-1 flex items-center justify-center py-12 md:py-20">
+            <div class="relative">
+              <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- 3D N Letter -->
+                <path d="M60 50 L80 50 L80 150 L60 150 Z" fill="#404040"/>
+                <path d="M60 50 L120 130 L120 50 L140 50 L140 150 L120 150 L60 70 L60 150 L40 150 L40 50 Z" fill="#606060"/>
+                <path d="M120 50 L140 50 L140 150 L120 150 Z" fill="#808080"/>
+                <!-- Shadow effect -->
+                <ellipse cx="100" cy="180" rx="60" ry="10" fill="black" opacity="0.1"/>
+              </svg>
+            </div>
+          </div>
 
-  <ContactCTA />
+          <!-- Work Card (Right) -->
+          <div class="md:col-span-1">
+            <a href="/work/" class="block group">
+              <div class="bg-gray-100 aspect-[4/3] rounded-lg overflow-hidden mb-4 flex items-center justify-center">
+                <div class="text-center p-8">
+                  <div class="text-4xl mb-4">💼</div>
+                  <p class="text-sm text-gray-600">Work preview</p>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold group-hover:opacity-70 transition-opacity">Work</h2>
+                <span class="text-gray-600">({projectCount})</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Section -->
+    <section class="py-12 md:py-20">
+      <div class="container mx-auto px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-end">
+          <!-- Tagline (Left) -->
+          <div class="max-w-md">
+            <p class="text-lg md:text-xl leading-relaxed">
+              I create websites that are easy to use, beautiful to look at, and built to make an impact.
+            </p>
+          </div>
+
+          <!-- Copyright/Signature (Right) -->
+          <div class="text-right">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold">
+              ©{siteConfig.name}
+            </h1>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scroll to Start Indicator -->
+    <div class="pb-8 px-8">
+      <div class="container mx-auto">
+        <div class="flex items-center gap-2 text-sm text-gray-500">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+            <circle cx="10" cy="10" r="8" stroke-width="1.5"/>
+            <path d="M10 6 L10 14 M7 11 L10 14 L13 11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Scroll to start</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </BaseLayout>

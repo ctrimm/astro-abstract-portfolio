@@ -5,30 +5,27 @@
 
 @layer base {
   :root {
-    --bg-primary: 10 10 15;
-    --bg-secondary: 17 17 24;
-    --bg-tertiary: 26 26 36;
-    --text-primary: 244 244 245;
-    --text-secondary: 161 161 170;
-    --text-muted: 113 113 122;
-    --accent-primary: 139 92 246;
-    --accent-secondary: 167 139 250;
+    --bg-primary: 255 255 255;
+    --bg-secondary: 250 250 250;
+    --bg-tertiary: 240 240 240;
+    --text-primary: 0 0 0;
+    --text-secondary: 60 60 60;
+    --text-muted: 120 120 120;
+    --accent-primary: 0 0 0;
+    --accent-secondary: 40 40 40;
+    --border-color: 230 230 230;
   }
 
   * {
-    @apply border-background-tertiary;
+    @apply border-gray-200;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-white text-black antialiased;
   }
 
   html {
     scroll-behavior: smooth;
-  }
-
-  html.dark {
-    color-scheme: dark;
   }
 }
 

@@ -6,43 +6,50 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header
-  class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/80 border-b border-background-tertiary"
+  class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200"
   id="header"
 >
-  <nav class="container mx-auto px-4 py-4">
+  <nav class="container mx-auto px-8 py-6">
     <div class="flex items-center justify-between">
       <!-- Logo -->
       <a
         href="/"
-        class="text-xl font-bold hover:text-accent transition-colors"
+        class="text-2xl font-bold hover:opacity-70 transition-opacity"
         aria-label="Home"
       >
-        {siteConfig.name}
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="6" fill="black"/>
+          <path d="M10 10 L22 10 L16 22 L10 22 Z" fill="white"/>
+        </svg>
       </a>
+
+      <!-- Local Time -->
+      <div class="hidden md:block text-sm">
+        <span class="text-gray-500">Local time</span>
+        <span class="ml-2 font-medium" id="local-time"></span>
+      </div>
+
+      <div class="flex-1"></div>
 
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center gap-8">
         {navigation.map((item) => (
           <a
             href={item.href}
-            class={`link-underline text-sm font-medium transition-colors ${
-              currentPath === item.href
-                ? 'text-accent'
-                : 'text-foreground-secondary hover:text-foreground'
-            }`}
+            class="text-sm font-medium transition-opacity hover:opacity-70"
           >
             {item.name}
           </a>
         ))}
       </div>
 
-      <!-- CTA Button -->
-      <div class="hidden md:block">
+      <!-- Email -->
+      <div class="hidden md:block ml-8">
         <a
-          href="/contact/"
-          class="px-4 py-2 bg-accent text-white rounded-full text-sm font-medium hover:bg-accent-light transition-colors"
+          href={siteConfig.links.email}
+          class="text-sm font-medium hover:opacity-70 transition-opacity"
         >
-          Hire Me
+          {siteConfig.email}
         </a>
       </div>
 
@@ -71,36 +78,54 @@ const currentPath = Astro.url.pathname;
     <!-- Mobile Menu -->
     <div
       id="mobile-menu"
-      class="hidden md:hidden mt-4 pt-4 border-t border-background-tertiary"
+      class="hidden md:hidden mt-4 pt-4 border-t border-gray-200"
     >
       <div class="flex flex-col gap-4">
+        <div class="text-sm mb-2">
+          <span class="text-gray-500">Local time</span>
+          <span class="ml-2 font-medium" id="local-time-mobile"></span>
+        </div>
         {navigation.map((item) => (
           <a
             href={item.href}
-            class={`text-sm font-medium transition-colors ${
-              currentPath === item.href
-                ? 'text-accent'
-                : 'text-foreground-secondary hover:text-foreground'
-            }`}
+            class="text-sm font-medium transition-opacity hover:opacity-70"
           >
             {item.name}
           </a>
         ))}
         <a
-          href="/contact/"
-          class="px-4 py-2 bg-accent text-white rounded-full text-sm font-medium text-center hover:bg-accent-light transition-colors"
+          href={siteConfig.links.email}
+          class="text-sm font-medium hover:opacity-70 transition-opacity"
         >
-          Hire Me
+          {siteConfig.email}
         </a>
       </div>
     </div>
   </nav>
 </header>
 
-<div class="h-[72px]"></div>
+<div class="h-[73px]"></div>
 
 <script>
-  function initMobileMenu() {
+  function updateTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    });
+
+    const timeElements = document.querySelectorAll('#local-time, #local-time-mobile');
+    timeElements.forEach(el => {
+      if (el) el.textContent = timeString;
+    });
+  }
+
+  function initHeader() {
+    updateTime();
+    setInterval(updateTime, 1000);
+
     const button = document.getElementById('mobile-menu-button');
     const menu = document.getElementById('mobile-menu');
 
@@ -111,9 +136,9 @@ const currentPath = Astro.url.pathname;
     }
   }
 
-  initMobileMenu();
+  initHeader();
 
   document.addEventListener('astro:page-load', () => {
-    initMobileMenu();
+    initHeader();
   });
 </script>
