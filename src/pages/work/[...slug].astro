@@ -1,197 +1,135 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import Button from '@components/ui/Button.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
-
-type ProjectEntry = CollectionEntry<'projects'>;
+import { getPath } from '@/utils/paths';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
-  return projects.map((project: ProjectEntry) => ({
-    params: { slug: project.id },
+  return projects.map((project: any) => ({
+    params: { slug: project.slug },
     props: { project },
   }));
 }
 
-const { project }: { project: ProjectEntry } = Astro.props;
+type ProjectEntry = CollectionEntry<'projects'>;
+const { project } = Astro.props as { project: ProjectEntry };
 const { Content } = await project.render();
 const { title, description, technologies, client, liveUrl, category, heroImage } = project.data;
 
-// Get all projects for navigation
 const allProjects = await getCollection('projects');
 const sortedProjects = allProjects.sort(
   (a: ProjectEntry, b: ProjectEntry) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
 );
 const currentIndex = sortedProjects.findIndex((p: ProjectEntry) => p.id === project.id);
-const projectNumber = (currentIndex + 1).toString().padStart(2, '0');
 const prevProject = sortedProjects[currentIndex - 1];
 const nextProject = sortedProjects[currentIndex + 1];
 ---
 
 <BaseLayout title={`${title} | Work`} description={description}>
-  <!-- Back Navigation -->
-  <section class="py-8 border-b border-gray-200">
-    <div class="container mx-auto px-8">
-      <a
-        href="/work/"
-        class="inline-flex items-center gap-2 text-sm hover:opacity-70 transition-opacity"
-      >
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Back to Projects
-      </a>
-    </div>
-  </section>
-
-  <!-- Project Header -->
-  <section class="py-12 md:py-20">
-    <div class="container mx-auto px-8">
-      <div class="max-w-4xl">
-        <div class="mb-6">
-          <span class="text-sm text-gray-500">/{projectNumber}</span>
+  <div class="min-h-screen bg-white text-black">
+    <!-- Project Header -->
+    <header class="border-b-8 border-black pt-20 pb-8 px-4 relative overflow-hidden">
+        <div class="absolute top-0 right-0 font-display text-[20vw] opacity-5 leading-none pointer-events-none select-none">
+            {category.split('-')[0]}
         </div>
-        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-8">
-          {title}
-        </h1>
-      </div>
-    </div>
-  </section>
-
-  <!-- Project Hero Image -->
-  <section class="pb-12 md:pb-20">
-    <div class="container mx-auto px-8">
-      <div class="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
-        {heroImage ? (
-          <img src={heroImage} alt={title} class="w-full h-full object-cover" />
-        ) : (
-          <div class="w-full h-full flex items-center justify-center">
-            <div class="text-center p-12">
-              <div class="text-6xl mb-4">🎨</div>
-              <p class="text-gray-600">Project hero image</p>
+        
+        <div class="relative z-10">
+            <div class="flex flex-wrap gap-4 mb-4 font-mono text-sm uppercase">
+                <span class="bg-black text-white px-2 py-1">PROJECT_ID: {project.id}</span>
+                <span class="border-2 border-black px-2 py-1">CLIENT: {client || 'UNKNOWN'}</span>
             </div>
-          </div>
+            
+            <h1 class="font-display text-6xl md:text-9xl uppercase leading-none break-words mb-8">
+                {title}
+            </h1>
+            
+            <p class="font-mono text-xl md:text-2xl max-w-4xl border-l-8 border-black pl-6">
+                {description}
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="grid md:grid-cols-[1fr_2fr] gap-0 border-b-8 border-black">
+        <!-- Sidebar Meta -->
+        <aside class="border-b-8 md:border-b-0 md:border-r-8 border-black p-8 space-y-12">
+            <div>
+                <h3 class="font-display text-2xl uppercase mb-4 bg-black text-white inline-block px-2">Tech Stack</h3>
+                <div class="flex flex-wrap gap-2">
+                    {technologies.map((tech: string) => (
+                        <span class="font-mono text-sm border-2 border-black px-2 py-1 hover:bg-black hover:text-white transition-colors cursor-default">
+                            {tech}
+                        </span>
+                    ))}
+                </div>
+            </div>
+            
+            {liveUrl && (
+                <div>
+                    <h3 class="font-display text-2xl uppercase mb-4 bg-black text-white inline-block px-2">Deployment</h3>
+                    <a href={liveUrl} target="_blank" class="block font-mono text-lg underline decoration-4 hover:bg-black hover:text-white transition-colors w-max p-1">
+                        LAUNCH_SITE ->
+                    </a>
+                </div>
+             )}
+             
+             <div class="p-4 border-4 border-black bg-gray-100">
+                 <div class="font-mono text-xs mb-2">STATUS:</div>
+                 <div class="font-display text-xl uppercase text-black animate-pulse">COMPLETED</div>
+             </div>
+        </aside>
+
+        <!-- Gallery / Content -->
+        <article class="p-8 md:p-12 prose-brutalist">
+            {heroImage && (
+                <div class="border-8 border-black mb-12 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-4 hover:translate-y-4 transition-all relative group overflow-hidden">
+                    <img src={heroImage} alt={title} class="w-full h-auto grayscale block" />
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'0.5\'/%3E%3C/svg%3E')] opacity-0 group-hover:opacity-40 mix-blend-hard-light pointer-events-none z-10"></div>
+                </div>
+            )}
+            
+            <div class="font-mono leading-relaxed max-w-none text-lg">
+                <Content />
+            </div>
+        </article>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="grid grid-cols-2 text-center font-display text-2xl md:text-4xl uppercase">
+        {prevProject ? (
+            <a href={getPath(`/work/${prevProject.slug}/`)} class="border-r-4 border-black p-8 hover:bg-black hover:text-white transition-colors flex flex-col justify-center min-h-[150px]">
+                <span class="text-sm font-mono block mb-2 opacity-50">&lt;- PREV</span>
+                {prevProject.data.title}
+            </a>
+        ) : (
+            <div class="border-r-4 border-black bg-gray-200"></div>
         )}
         
-        <!-- Category Badge -->
-        <div class="absolute top-6 left-6 bg-black text-white px-4 py-2 rounded-full text-sm font-medium">
-          {category.replace(/-/g, ' ')}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Project Details Grid -->
-  <section class="py-12 border-t border-gray-200">
-    <div class="container mx-auto px-8">
-      <div class="grid md:grid-cols-2 gap-12">
-        <!-- Left Column: Project Info -->
-        <div class="space-y-8">
-          {client && (
-            <div>
-              <h3 class="text-sm font-semibold mb-3 uppercase tracking-wider text-gray-500">Client</h3>
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                  <span class="text-lg">👤</span>
-                </div>
-                <div>
-                  <p class="font-semibold">{client}</p>
-                  <p class="text-sm text-gray-600">Founder of {client}</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div>
-            <h3 class="text-sm font-semibold mb-3 uppercase tracking-wider text-gray-500">Description</h3>
-            <p class="text-lg leading-relaxed">{description}</p>
-          </div>
-
-          <div>
-            <h3 class="text-sm font-semibold mb-3 uppercase tracking-wider text-gray-500">Technologies</h3>
-            <div class="flex flex-wrap gap-2">
-              {technologies.map((tech: string) => (
-                <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {liveUrl && (
-            <div>
-              <Button href={liveUrl} variant="primary" external>
-                View Live Site →
-              </Button>
-            </div>
-          )}
-        </div>
-
-        <!-- Right Column: Project Content -->
-        <div class="prose prose-lg max-w-none">
-          <Content />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Navigation -->
-  <section class="py-12 border-t border-gray-200">
-    <div class="container mx-auto px-8">
-      <div class="flex justify-between items-center">
-        {prevProject ? (
-          <a href={`/work/${prevProject.id}/`} class="group text-left">
-            <span class="text-sm text-gray-500 block mb-1">← Previous</span>
-            <span class="font-semibold group-hover:opacity-70 transition-opacity">
-              {prevProject.data.title}
-            </span>
-          </a>
-        ) : <div />}
-
-        {nextProject && (
-          <a href={`/work/${nextProject.id}/`} class="text-right group">
-            <span class="text-sm text-gray-500 block mb-1">Next →</span>
-            <span class="font-semibold group-hover:opacity-70 transition-opacity">
-              {nextProject.data.title}
-            </span>
-          </a>
+        {nextProject ? (
+            <a href={getPath(`/work/${nextProject.slug}/`)} class="p-8 hover:bg-black hover:text-white transition-colors flex flex-col justify-center min-h-[150px]">
+                <span class="text-sm font-mono block mb-2 opacity-50">NEXT -></span>
+                {nextProject.data.title}
+            </a>
+        ) : (
+            <div class="bg-gray-200"></div>
         )}
-      </div>
-    </div>
-  </section>
+    </nav>
+  </div>
 </BaseLayout>
 
-<style>
-  .prose {
-    @apply text-gray-700;
-  }
-
-  .prose :global(h2) {
-    @apply text-black font-bold text-2xl mt-8 mb-4;
-  }
-
-  .prose :global(h3) {
-    @apply text-black font-semibold text-xl mt-6 mb-3;
-  }
-
-  .prose :global(p) {
-    @apply mb-4 leading-relaxed;
-  }
-
-  .prose :global(ul),
-  .prose :global(ol) {
-    @apply mb-4 ml-6;
-  }
-
-  .prose :global(li) {
-    @apply mb-2;
-  }
-
-  .prose :global(strong) {
-    @apply text-black font-semibold;
-  }
-
-  .prose :global(a) {
-    @apply text-black underline hover:no-underline;
-  }
+<style is:global>
+    /* Brutalist Typography for Content */
+    .prose-brutalist h1, 
+    .prose-brutalist h2, 
+    .prose-brutalist h3 {
+        @apply font-display uppercase mt-12 mb-6;
+    }
+    
+    .prose-brutalist h2 { @apply text-4xl; }
+    .prose-brutalist h3 { @apply text-2xl border-b-4 border-black pb-2 inline-block; }
+    
+    .prose-brutalist p { @apply mb-6; }
+    .prose-brutalist ul { @apply list-disc list-inside mb-6 font-bold; }
+    .prose-brutalist a { @apply underline decoration-4 hover:bg-black hover:text-white transition-colors; }
+    .prose-brutalist img { @apply border-4 border-black my-8; }
 </style>

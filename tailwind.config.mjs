@@ -5,24 +5,24 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: '#000000',
+        secondary: '#ffffff',
+        surface: '#ffffff',
         background: {
-          DEFAULT: 'rgb(var(--bg-primary) / <alpha-value>)',
-          secondary: 'rgb(var(--bg-secondary) / <alpha-value>)',
-          tertiary: 'rgb(var(--bg-tertiary) / <alpha-value>)',
+          DEFAULT: '#ffffff',
+          dark: '#000000',
         },
         foreground: {
-          DEFAULT: 'rgb(var(--text-primary) / <alpha-value>)',
-          secondary: 'rgb(var(--text-secondary) / <alpha-value>)',
-          muted: 'rgb(var(--text-muted) / <alpha-value>)',
-        },
-        accent: {
-          DEFAULT: 'rgb(var(--accent-primary) / <alpha-value>)',
-          light: 'rgb(var(--accent-secondary) / <alpha-value>)',
+          DEFAULT: '#000000',
+          dark: '#ffffff',
         },
       },
       fontFamily: {
-        sans: ['Inter Variable', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ['"Space Mono"', 'monospace'],
+        display: ['"Rubik Mono One"', 'sans-serif'],
+      },
+      borderWidth: {
+        DEFAULT: '4px',
       },
       animation: {
         'fade-up': 'fadeUp 0.6s ease-out forwards',
@@ -30,6 +30,7 @@ export default {
         'slide-up': 'slideUp 0.8s ease-out forwards',
         'float': 'float 6s ease-in-out infinite',
         'bounce-slow': 'bounce 3s ease-in-out infinite',
+        'glitch': 'glitch 1s linear infinite',
       },
       keyframes: {
         fadeUp: {
@@ -47,6 +48,11 @@ export default {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-20px)' },
+        },
+        glitch: {
+          '2%, 64%': { transform: 'translate(2px,0) skew(0deg)' },
+          '4%, 60%': { transform: 'translate(-2px,0) skew(0deg)' },
+          '62%': { transform: 'translate(0,0) skew(5deg)' },
         },
       },
     },

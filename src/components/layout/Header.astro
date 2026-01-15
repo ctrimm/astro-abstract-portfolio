@@ -1,144 +1,86 @@
 ---
 import { navigation } from '@/data/navigation';
 import { siteConfig } from '@/data/site';
-
-// const currentPath = Astro.url.pathname;
+import { getPath } from '@/utils/paths';
 ---
 
-<header
-  class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200"
-  id="header"
->
-  <nav class="container mx-auto px-8 py-6">
-    <div class="flex items-center justify-between">
-      <!-- Logo -->
-      <a
-        href="/"
-        class="text-2xl font-bold hover:opacity-70 transition-opacity"
-        aria-label="Home"
-      >
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="32" height="32" rx="6" fill="black"/>
-          <path d="M10 10 L22 10 L16 22 L10 22 Z" fill="white"/>
-        </svg>
-      </a>
-
-      <!-- Local Time -->
-      <div class="hidden md:block text-sm">
-        <span class="text-gray-500">Local time</span>
-        <span class="ml-2 font-medium" id="local-time"></span>
-      </div>
-
-      <div class="flex-1"></div>
-
-      <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center gap-8">
-        {navigation.map((item) => (
-          <a
-            href={item.href}
-            class="text-sm font-medium transition-opacity hover:opacity-70"
-          >
-            {item.name}
-          </a>
-        ))}
-      </div>
-
-      <!-- Email -->
-      <div class="hidden md:block ml-8">
-        <a
-          href={siteConfig.links.email}
-          class="text-sm font-medium hover:opacity-70 transition-opacity"
-        >
-          {siteConfig.email}
-        </a>
-      </div>
-
-      <!-- Mobile Menu Button -->
-      <button
-        id="mobile-menu-button"
-        class="md:hidden p-2"
-        aria-label="Toggle menu"
-      >
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      </button>
+<header class="fixed top-0 left-0 w-full z-50 mix-blend-difference text-white">
+  <!-- Marquee Bar -->
+  <div class="bg-white text-black overflow-hidden border-b-4 border-black whitespace-nowrap py-2">
+    <div class="animate-marquee inline-block font-display font-black text-xl uppercase tracking-widest">
+      {Array(10).fill(`${siteConfig.title} // `).map((item) => (
+        <span class="mx-4">{item}</span>
+      ))}
     </div>
+    <div class="animate-marquee inline-block font-display font-black text-xl uppercase tracking-widest absolute top-2 left-0" aria-hidden="true">
+      {Array(10).fill(`${siteConfig.title} // `).map((item) => (
+        <span class="mx-4">{item}</span>
+      ))}
+    </div>
+  </div>
 
-    <!-- Mobile Menu -->
-    <div
-      id="mobile-menu"
-      class="hidden md:hidden mt-4 pt-4 border-t border-gray-200"
-    >
-      <div class="flex flex-col gap-4">
-        <div class="text-sm mb-2">
-          <span class="text-gray-500">Local time</span>
-          <span class="ml-2 font-medium" id="local-time-mobile"></span>
-        </div>
-        {navigation.map((item) => (
-          <a
-            href={item.href}
-            class="text-sm font-medium transition-opacity hover:opacity-70"
-          >
-            {item.name}
-          </a>
-        ))}
-        <a
-          href={siteConfig.links.email}
-          class="text-sm font-medium hover:opacity-70 transition-opacity"
+  <!-- Main Navigation -->
+  <nav class="flex justify-between items-start p-4 md:p-8">
+    <!-- Logo / Home Link (Vertical) -->
+    <a href={getPath('/')} class="hidden md:block writing-vertical-lr font-display text-4xl hover:text-primary transition-colors uppercase">
+      {siteConfig.name}
+    </a>
+
+    <!-- Nav Links (Stacked Right) -->
+    <div class="flex flex-col items-end gap-2">
+      {navigation.map((item) => (
+        <a 
+          href={item.href} 
+          class="font-display text-4xl md:text-6xl uppercase hover:bg-white hover:text-black transition-colors px-2"
         >
-          {siteConfig.email}
+          {item.name}
         </a>
+      ))}
+      <a 
+        href={siteConfig.links.email}
+        class="font-display text-4xl md:text-6xl uppercase hover:bg-white hover:text-black transition-colors px-2"
+      >
+        Email
+      </a>
+      
+      <!-- Time Display -->
+      <div id="brutalist-time" class="mt-8 font-mono text-xl border-4 border-white p-2">
+        00:00:00
       </div>
     </div>
   </nav>
+
+  <!-- Mobile Menu Button (Simple Text) -->
+  <button id="menu-toggle" class="md:hidden fixed bottom-8 right-8 bg-black text-white p-4 font-display uppercase border-4 border-white z-50">
+    Menu
+  </button>
 </header>
 
-<div class="h-[73px]"></div>
+<div class="h-24"></div> <!-- Spacer -->
+
+<style>
+  .writing-vertical-lr {
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+  }
+  
+  .animate-marquee {
+    animation: marquee 20s linear infinite;
+  }
+  
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
 
 <script>
   function updateTime() {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: true
-    });
-
-    const timeElements = document.querySelectorAll('#local-time, #local-time-mobile');
-    timeElements.forEach(el => {
-      if (el) el.textContent = timeString;
-    });
-  }
-
-  function initHeader() {
-    updateTime();
-    setInterval(updateTime, 1000);
-
-    const button = document.getElementById('mobile-menu-button');
-    const menu = document.getElementById('mobile-menu');
-
-    if (button && menu) {
-      button.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-      });
+    const el = document.getElementById('brutalist-time');
+    if (el) {
+      el.textContent = new Date().toLocaleTimeString();
     }
   }
-
-  initHeader();
-
-  document.addEventListener('astro:page-load', () => {
-    initHeader();
-  });
+  setInterval(updateTime, 1000);
+  updateTime();
 </script>

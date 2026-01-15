@@ -8,8 +8,8 @@ const services = [
   'Web Design',
   'UI/UX Design',
   'Branding',
-  'Prototyping',
-  'Website Maintenance',
+  'Code',
+  'Chaos',
 ];
 ---
 
@@ -17,66 +17,38 @@ const services = [
   title={`About | ${siteConfig.name}`}
   description={siteConfig.description}
 >
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen bg-black text-white p-4">
     <!-- Hero Section -->
-    <section class="flex-1 flex items-center justify-center py-20 md:py-32">
-      <div class="container mx-auto px-8">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-          <!-- Title (Left) -->
-          <div>
-            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold">
-              ({siteConfig.name.split(' ')[0]}—©{currentYear})
-            </h1>
-          </div>
-
-          <!-- 3D Logo (Right) -->
-          <div class="flex items-center justify-center md:justify-end">
-            <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- 3D N Letter -->
-              <path d="M60 50 L80 50 L80 150 L60 150 Z" fill="#404040"/>
-              <path d="M60 50 L120 130 L120 50 L140 50 L140 150 L120 150 L60 70 L60 150 L40 150 L40 50 Z" fill="#606060"/>
-              <path d="M120 50 L140 50 L140 150 L120 150 Z" fill="#808080"/>
-              <!-- Shadow effect -->
-              <ellipse cx="100" cy="180" rx="60" ry="10" fill="black" opacity="0.1"/>
-            </svg>
-          </div>
-        </div>
-      </div>
+    <section class="py-20 md:py-32 border-b-4 border-white mb-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 pointer-events-none noise-canvas"></div>
+        <h1 class="font-display text-8xl md:text-[8rem] leading-none uppercase break-words glitch" data-text="ABOUT_ME">
+          ABOUT_ME
+        </h1>
+        <p class="font-mono text-xl mt-8 max-w-2xl border-l-4 border-white pl-4 ml-4">
+          {siteConfig.description} <br>
+          <span class="bg-white text-black">NO COMPROMISE.</span>
+        </p>
     </section>
 
     <!-- Services Section -->
-    <section class="py-12 border-t border-gray-200">
-      <div class="container mx-auto px-8">
-        <div class="grid md:grid-cols-5 gap-8 md:gap-12">
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+      <div class="border-4 border-white p-8 hover:bg-white hover:text-black transition-colors">
+        <h2 class="font-display text-4xl mb-8 uppercase">Services</h2>
+        <ul class="font-mono text-xl space-y-4">
           {services.map((service) => (
-            <div>
-              <h3 class="font-semibold text-lg">{service}</h3>
-            </div>
+            <li class="border-b-2 border-current pb-2 uppercase flex justify-between">
+              <span>{service}</span>
+              <span>[+]</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
-    </section>
-
-    <!-- Bottom Section -->
-    <section class="py-12 md:py-20">
-      <div class="container mx-auto px-8">
-        <div class="grid md:grid-cols-2 gap-12 items-start">
-          <!-- Scroll Indicator (Left) -->
-          <div class="flex items-center gap-2 text-sm text-gray-500">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
-              <circle cx="10" cy="10" r="8" stroke-width="1.5"/>
-              <path d="M10 6 L10 14 M7 11 L10 14 L13 11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Scroll to start</span>
-          </div>
-
-          <!-- Description (Right) -->
-          <div class="md:text-right">
-            <p class="text-lg md:text-xl leading-relaxed max-w-2xl md:ml-auto">
-              {siteConfig.description} My approach is simple — understand the goal, create structure, then refine every detail until it feels effortless.
-            </p>
-          </div>
-        </div>
+      
+      <div class="border-4 border-white p-8 flex flex-col justify-between">
+         <div class="font-display text-9xl leading-none self-end">?</div>
+         <p class="font-mono uppercase">
+           We create things that don't just exist. They scream.
+         </p>
       </div>
     </section>
   </div>

@@ -4,6 +4,13 @@ import Header from '@components/layout/Header.astro';
 import Footer from '@components/layout/Footer.astro';
 import '@styles/global.css';
 
+// Supports weights 400
+import '@fontsource/space-mono';
+// Supports weights 400
+import '@fontsource/rubik-mono-one';
+
+import { getPath } from '@/utils/paths';
+
 interface Props {
   title: string;
   description: string;
@@ -12,7 +19,7 @@ interface Props {
 
 const { title, description, image = '/images/og-image.jpg' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const imageURL = new URL(image, Astro.site);
+const imageURL = new URL(getPath(image), Astro.site);
 ---
 
 <!doctype html>
@@ -42,38 +49,71 @@ const imageURL = new URL(image, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <ViewTransitions />
-    <slot name="head" />
+    <script is:inline>
+      // Time-based Dark Mode
+      function updateTheme() {
+        const hour = new Date().getHours();
+        const isDark = hour < 6 || hour >= 18; // Dark mode between 6PM and 6AM
+        
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
+      
+      updateTheme();
+      document.addEventListener('astro:after-swap', updateTheme);
+    </script>
   </head>
-  <body class="bg-white text-black antialiased">
+  <body class="bg-background text-foreground antialiased overflow-x-hidden selection:bg-foreground selection:text-background">
+    <canvas id="noise" class="noise-canvas"></canvas>
+    
     <Header />
-    <main>
+    <main class="relative z-10 min-h-screen p-4 md:p-8">
       <slot />
     </main>
     <Footer />
 
     <script>
-      // Scroll animation observer
-      function initScrollAnimations() {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-            }
-          });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+      // Noise Effect
+      const canvas = document.getElementById('noise') as HTMLCanvasElement;
+      const ctx = canvas.getContext('2d');
 
-        document.querySelectorAll('.animate-on-scroll').forEach((el) => {
-          observer.observe(el);
+      if (ctx) {
+        const resize = () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        };
+
+        const noise = () => {
+          const w = canvas.width;
+          const h = canvas.height;
+          const idata = ctx.createImageData(w, h);
+          const buffer32 = new Uint32Array(idata.data.buffer);
+          const len = buffer32.length;
+
+          for (let i = 0; i < len; i++) {
+            if (Math.random() < 0.1) {
+              buffer32[i] = 0xff000000;
+            }
+          }
+
+          ctx.putImageData(idata, 0, 0);
+          requestAnimationFrame(noise);
+        };
+
+        window.addEventListener('resize', resize);
+        resize();
+        noise();
+        
+        // Mouse Interaction with Noise (Subtle Distortion)
+        document.addEventListener('mousemove', (e) => {
+          const x = e.clientX / window.innerWidth;
+          const y = e.clientY / window.innerHeight;
+          canvas.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
         });
       }
-
-      // Initialize on page load
-      initScrollAnimations();
-
-      // Re-initialize on View Transitions
-      document.addEventListener('astro:page-load', () => {
-        initScrollAnimations();
-      });
     </script>
   </body>
 </html>

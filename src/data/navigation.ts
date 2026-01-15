@@ -1,18 +1,20 @@
+import { getPath } from '@/utils/paths';
+
 export const navigation = [
   {
     name: 'Home',
-    href: '/',
+    href: getPath('/'),
   },
   {
     name: 'Work',
-    href: '/work/',
+    href: getPath('/work/'),
   },
   {
     name: 'About',
-    href: '/about/',
+    href: getPath('/about/'),
   },
   {
     name: 'Contact',
-    href: '/contact/',
+    href: getPath('/contact/'),
   },
 ];

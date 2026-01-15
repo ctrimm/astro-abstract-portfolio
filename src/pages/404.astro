@@ -1,32 +1,37 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import Button from '@components/ui/Button.astro';
+import { getPath } from '@/utils/paths';
 ---
 
 <BaseLayout
-  title="404 - Page Not Found"
-  description="The page you are looking for could not be found."
+  title="404 | LOST"
+  description="Page not found."
 >
-  <section class="min-h-[80vh] flex items-center justify-center">
-    <div class="container mx-auto px-8">
-      <div class="max-w-2xl mx-auto text-center">
-        <div class="mb-12">
-          <h1 class="text-8xl md:text-9xl font-bold mb-6">404</h1>
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Page Not Found</h2>
-          <p class="text-lg text-gray-600">
-            The page you're looking for doesn't exist or has been moved.
-          </p>
-        </div>
+  <div class="min-h-screen bg-black text-white flex flex-col justify-center items-center relative overflow-hidden">
+    <!-- Glitch Background -->
+    <div class="absolute inset-0 z-0 opacity-20 flex justify-center items-center">
+         <span class="font-display text-[50vw] select-none text-gray-800">404</span>
+    </div>
 
-        <div class="flex flex-wrap justify-center gap-4">
-          <Button href="/" variant="primary" size="lg">
-            Go Home
-          </Button>
-          <Button href="/work/" variant="outline" size="lg">
-            View Work
-          </Button>
-        </div>
+    <div class="relative z-10 text-center border-4 border-white p-8 md:p-20 bg-black max-w-4xl mx-4">
+      <h1 class="font-display text-8xl md:text-9xl mb-4 glitch" data-text="ERROR_404">
+        ERROR_404
+      </h1>
+      <h2 class="font-mono text-2xl md:text-4xl mb-8 uppercase border-b-4 border-white pb-4 inline-block">
+        FILE_NOT_FOUND
+      </h2>
+      <p class="font-mono text-gray-400 mb-12 max-w-lg mx-auto">
+        The requested data sector has been corrupted or does not exist in this reality.
+      </p>
+
+      <div class="flex flex-col md:flex-row gap-4 justify-center font-display text-2xl">
+        <a href={getPath('/')} class="bg-white text-black px-8 py-4 uppercase hover:bg-primary transition-colors border-4 border-white">
+          Return_Home
+        </a>
+        <a href={getPath('/work')} class="px-8 py-4 uppercase border-4 border-white hover:bg-white hover:text-black transition-colors">
+          Scan_Archives
+        </a>
       </div>
     </div>
-  </section>
+  </div>
 </BaseLayout>
