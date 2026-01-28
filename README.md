@@ -1,6 +1,8 @@
-# Impressa Portfolio Theme
+# Brutalistic Portfolio Theme
 
-A modern, dark-themed portfolio website built with Astro, inspired by the Impressa Framer template by Webestica.
+<img width="3812" height="2282" alt="Home page of burtalistic website theme" src="https://github.com/user-attachments/assets/4324feb2-1328-4ae6-9dd1-90c98500ac87" />
+
+A modern, dark-themed portfolio website built with Astro, inspired by early glitch websites.
 
 ## Features
 
