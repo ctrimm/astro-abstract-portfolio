@@ -4,6 +4,8 @@
 
 A modern, dark-themed portfolio website built with Astro, inspired by early glitch websites.
 
+Live preview [here on GitHub Pages](https://ctrimm.github.io/astro-abstract-portfolio/).
+
 ## Features
 
 - 🎨 **Dark Mode Design** - Beautiful dark theme with vibrant violet accents
