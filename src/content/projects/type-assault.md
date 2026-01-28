@@ -2,8 +2,9 @@
 title: 'TYPE_ASSAULT'
 description: 'Typography as a weapon. Legibility is secondary to impact.'
 publishDate: 2023-11-05
+thumbnail: 'https://images.unsplash.com/photo-1555421689-d68471e189f2?auto=format&fit=crop&q=80&w=800'
 heroImage: 'https://images.unsplash.com/photo-1555421689-d68471e189f2?auto=format&fit=crop&q=80&w=2670'
-category: 'Design'
+category: 'web-design'
 tags:
   - 'Typography'
   - 'Variable Fonts'

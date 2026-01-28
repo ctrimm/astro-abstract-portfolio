@@ -10,6 +10,7 @@ const projects = defineCollection({
     heroImage: z.string().optional(),
     category: z.enum(['web-design', 'branding', 'development', 'mobile', 'ui-ux']),
     technologies: z.array(z.string()),
+    tags: z.array(z.string()).optional(),
     client: z.string().optional(),
     liveUrl: z.string().url().optional(),
     githubUrl: z.string().url().optional(),

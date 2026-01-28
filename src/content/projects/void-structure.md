@@ -2,8 +2,9 @@
 title: 'VOID_STRUCTURE'
 description: 'Architecture for the digital wasteland. Monochrome madness.'
 publishDate: 2024-02-10
+thumbnail: 'https://images.unsplash.com/photo-1481277542470-605612bd2d61?auto=format&fit=crop&q=80&w=800'
 heroImage: 'https://images.unsplash.com/photo-1481277542470-605612bd2d61?auto=format&fit=crop&q=80&w=2606'
-category: 'Architecture'
+category: 'web-design'
 tags:
   - 'CSS Grid'
   - 'Minimalism'
