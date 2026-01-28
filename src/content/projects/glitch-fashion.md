@@ -2,8 +2,9 @@
 title: 'GLITCH_FASHION'
 description: 'E-commerce for the dystopian youth. Broken layouts, broken prices.'
 publishDate: 2024-01-01
+thumbnail: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800'
 heroImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=2800'
-category: 'E-commerce'
+category: 'development'
 tags:
   - 'Shopify'
   - 'Liquid'

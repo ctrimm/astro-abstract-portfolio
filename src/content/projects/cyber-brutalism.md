@@ -2,8 +2,9 @@
 title: 'CYBER_BRUTALISM'
 description: 'A study in raw data visualization and aggressive typography.'
 publishDate: 2024-03-15
+thumbnail: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800'
 heroImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2670'
-category: 'Experimental'
+category: 'development'
 tags:
   - 'WebGL'
   - 'Three.js'

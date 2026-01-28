@@ -2,8 +2,9 @@
 title: 'ANALOG_DECAY'
 description: 'Preserving the noise of magnetic tape in a digital container.'
 publishDate: 2023-12-20
+thumbnail: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800'
 heroImage: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=2670'
-category: 'Audio'
+category: 'development'
 tags:
   - 'WebAudio API'
   - 'Svelte'
